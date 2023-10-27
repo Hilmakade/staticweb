@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hilma's LAB 1 Assignment</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #c78888;
+      }
+
+      .hero {
+        width: 80%;
+        text-align: center;
+        background: linear-gradient(
+          45deg,
+          #ff8fad,
+          #e0b0bc,
+          #b191bd,
+          #ff968a,
+          #d8b5d9
+        );
+        background-size: cover;
+        animation: color 12s ease-in-out infinite;
+        border-radius: 60px;
+        padding: 8px 0;
+      }
+
+      @keyframes color {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      h1 {
+        font-size: 50px;
+        text-align: center;
+        color: rgb(160, 43, 62);
+        font-weight: bold;
+        text-shadow: 1px 1px 2px #000000;
+        margin-left: 20px;
+      }
+
+      h2 {
+        font-size: 30px;
+        text-align: center;
+        color: rgb(160, 43, 62);
+        font-weight: bold;
+
+        margin-left: 20px;
+        text-shadow: 1px 1px 2px #000000;
+      }
+
+      p {
+        font-size: 20px;
+        text-align: center;
+        color: rgb(12, 12, 12);
+        font-weight: bold;
+        text-shadow: 1px 1px 2px #7e5858;
+        margin-left: 20px;
+      }
+      label {
+        font-size: 20px;
+        text-align: center;
+        color: rgb(12, 12, 12);
+        font-weight: bold;
+        text-shadow: 1px 1px 2px #7e5858;
+        margin-left: 20px;
+      }
+
+      button {
+        font-size: 20px;
+        text-align: center;
+        color: black;
+        font-weight: bold;
+        font-family: garamond;
+        margin: 30px 0;
+        padding: 5px;
+        margin: 10px;
+        border-radius: 10px;
+        background-color: #da6396;
+      }
+
+      .button-container {
+        text-align: center;
+        display: flex;
+      }
+
+      button:hover {
+        background-color: rgb(160, 43, 62);
+        color: black;
+      }
+
+      table {
+        border-collapse: collapse;
+        border: 1px solid black;
+        width: 60%;
+        margin: center;
+        margin-left: 250px;
+        text-align: center;
+        font-family: garamond;
+        font-weight: bold;
+        background-color: #93cddb;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #b1577d;
+        color: black;
+        font-weight: bold;
+        font-size: larger;
+      }
+
+      tr:nth-child(even) {
+        background-color: rgb(203, 219, 228);
+      }
+
+      tr:hover {
+        background-color: #ddd;
+      }
+
+      img {
+        max-width: 200px;
+        max-height: 100px;
+        background-size: cover;
+      }
+
+      #preferencesList {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero">
+      <h1>
+        <left>Welcome to my page</left>
+      </h1>
+      <table border="1">
+        <tr>
+          <th>Passport Picture</th>
+          <th>Registration Number</th>
+          <th>Name</th>
+        </tr>
+        <tr>
+          <td>
+            <img
+              src="C:\LAB1 WEB\html\portfolioprofile.jpeg"
+              alt="Passport image"
+            />
+          </td>
+          <td>SCT221-0115/2021</td>
+          <td>Kade Hilma Marie</td>
+        </tr>
+      </table>
+
+      <h2>Visit Count</h2>
+      <p>
+        Number of times this web page has been opened:
+        <span id="visitCount">0</span>
+      </p>
+
+      <button onclick="resetVisitCount()">Reset Visit Count</button>
+
+      <h2>User Preferences</h2>
+      <label for="colorPreference"> Choose colour preference</label>
+      <input type="color" id="colorPreference" value="#000" />
+      <button onclick="setUserPreference()">Set User Preference</button>
+      <button onclick="displayStoredPreferences()">
+        Display User Preferences
+      </button>
+      <button onclick="clearPreferences()">Clear User Preferences</button>
+
+      <ul id="preferencesList"></ul>
+
+      <script>
+        // Local Storage functions
+        function setPreference(color) {
+          localStorage.setItem("userColorPreference", color);
+          updateBackground();
+        }
+
+        function clearPreferences() {
+          localStorage.removeItem("userColorPreference");
+          updateBackground();
+        }
+
+        function displayStoredPreferences() {
+          const preferencesList = document.getElementById("preferencesList");
+          preferencesList.innerHTML = "";
+          const storedColor = localStorage.getItem("userColorPreference");
+          if (storedColor) {
+            const listItem = document.createElement("li");
+            listItem.textContent = `User Color Preference: ${storedColor}`;
+            preferencesList.appendChild(listItem);
+          }
+        }
+
+        // Visit Count functions
+        function resetVisitCount() {
+          localStorage.removeItem("visitCount");
+          updateVisitCount();
+        }
+
+        function updateVisitCount() {
+          let count = parseInt(localStorage.getItem("visitCount")) || 0;
+          count++;
+          localStorage.setItem("visitCount", count);
+          document.getElementById("visitCount").textContent = count;
+        }
+
+        // Background color update
+        function updateBackground() {
+          const storedColor = localStorage.getItem("userColorPreference");
+          document.body.style.backgroundColor = storedColor || "white";
+        }
+
+        // Set user preference
+        function setUserPreference() {
+          const colorInput = document.getElementById("colorPreference");
+          const userColorPreference = colorInput.value;
+          if (userColorPreference) {
+            setPreference(userColorPreference);
+          }
+        }
+
+        // Initial setup
+        updateVisitCount();
+        displayStoredPreferences();
+        updateBackground();
+      </script>
+    </div>
+  </body>
+</html>
